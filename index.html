@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Sign-Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .workshop-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .workshop-title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .workshop-details {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        .enrollment-status {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .spots-remaining {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .full-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            background: #51cf66;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="workshop-header">
+            <h1 class="workshop-title">Advanced JavaScript Workshop</h1>
+            <div class="workshop-details">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                </svg>
+                March 15, 2025
+            </div>
+            <div class="workshop-details">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
+                </svg>
+                University Tech Center, Room 204
+            </div>
+        </div>
+
+        <div class="enrollment-status" id="enrollmentStatus">
+            <div class="spots-remaining" id="spotsRemaining">
+                Loading...
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="full-message" id="fullMessage" style="display: none;">
+            Workshop is full! No more spots available.
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Registration successful! You're enrolled in the workshop.
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Something went wrong. Please try again.
+        </div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Sign Up for Workshop
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Replace this with your Google Apps Script Web App URL
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+        async function loadEnrollmentStatus() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                const spotsRemainingEl = document.getElementById('spotsRemaining');
+                const progressFillEl = document.getElementById('progressFill');
+                const formEl = document.getElementById('signupForm');
+                const fullMessageEl = document.getElementById('fullMessage');
+                
+                if (data.isFull) {
+                    spotsRemainingEl.textContent = 'Workshop is Full';
+                    progressFillEl.style.width = '100%';
+                    formEl.style.display = 'none';
+                    fullMessageEl.style.display = 'block';
+                } else {
+                    spotsRemainingEl.textContent = `${data.spotsRemaining} spots remaining`;
+                    const progressPercent = (data.currentCount / 10) * 100;
+                    progressFillEl.style.width = progressPercent + '%';
+                    formEl.style.display = 'block';
+                    fullMessageEl.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading enrollment status:', error);
+                document.getElementById('spotsRemaining').textContent = 'Sign up available';
+            }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading state
+            submitBtn.innerHTML = '<span class="spinner"></span>Submitting...';
+            submitBtn.disabled = true;
+            document.querySelector('.container').classList.add('loading');
+            
+            try {
+                const formData = new FormData(this);
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    successMessage.style.display = 'block';
+                    this.reset();
+                    
+                    // Reload enrollment status
+                    setTimeout(() => {
+                        loadEnrollmentStatus();
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                    
+                } else if (result.status === 'full') {
+                    errorMessage.textContent = 'Sorry, the workshop is now full!';
+                    errorMessage.style.display = 'block';
+                    setTimeout(() => {
+                        loadEnrollmentStatus();
+                        errorMessage.style.display = 'none';
+                    }, 3000);
+                    
+                } else {
+                    throw new Error(result.message || 'Unknown error');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                errorMessage.textContent = 'Something went wrong. Please try again.';
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Reset button state
+            submitBtn.innerHTML = 'Sign Up for Workshop';
+            submitBtn.disabled = false;
+            document.querySelector('.container').classList.remove('loading');
+        });
+
+        // Load initial enrollment status
+        loadEnrollmentStatus();
+        
+        // Refresh status every 30 seconds
+        setInterval(loadEnrollmentStatus, 30000);
+    </script>
+</body>
+</html>
