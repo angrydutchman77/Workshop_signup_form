@@ -274,7 +274,7 @@
 
     <script>
         // Replace this with your Google Apps Script Web App URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2QMgVNpzbS8xZCIpzJvFGQqnDwaTnZv4MgZyFIO2D3l0hLgAHxYPqAWvQhEzGa_7b8A/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6H8iEGXRkP1Q4VGX6oW6pCDQHzrwWM27oqHTRgviAQitTpeGnAxxAYEsvUY6S_tcc_Q/exec';
 
         async function loadEnrollmentStatus() {
             try {
@@ -293,7 +293,7 @@
                     fullMessageEl.style.display = 'block';
                 } else {
                     spotsRemainingEl.textContent = `${data.spotsRemaining} spots remaining`;
-                    const progressPercent = (data.currentCount / 20) * 100;
+                    const progressPercent = (data.currentCount / 30) * 100;
                     progressFillEl.style.width = progressPercent + '%';
                     formEl.style.display = 'block';
                     fullMessageEl.style.display = 'none';
